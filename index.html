@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;500&display=swap');
+
+    :root {
+      --gray: #C8C6C6;
+      --red: #CD1818;  
+      --white: #FFFFFF;  
+    }
+
+    body {
+      display: grid;
+      font-family: 'Nunito', sans-serif;
+      height: 100vh;
+      margin: 0;
+      place-items: center;
+    }
+
+    .modal {
+      align-items: center;
+      background: var(--red);
+      border-radius: 16px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      width: 360px;
+    }
+
+    .main-image {
+      margin-top: -112px;
+      width: 314px;
+    }
+
+    .title {
+      color: var(--white);
+      font-size: 36px;
+      margin-bottom: 12px;
+      margin-top: 0;
+    }
+
+    .subtitle {
+      color: var(--white);
+      font-size: 24px;
+      font-weight: 300;
+      margin-bottom: 32px;
+      margin-top: 0;
+    }
+
+    .stars-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
+      position: relative;
+      width: 100%;
+    }
+
+    .gray-stars-container img {
+      width: 42px;
+    }
+
+    .yellow-stars-container {
+      cursor: pointer;
+      font-size: 37px;
+      left: 45px;
+      margin: 0 auto;
+      position: absolute;
+      top: 0;
+    }
+
+    .comment-box {
+      height: 0;
+    }
+
+    .comment-box label {
+      color: var(--white);
+      display: inline-block;
+      font-weight: 300;
+      margin-bottom: 12px;
+    }
+
+    .comment-box textarea {
+      background: none;
+      border: 1px solid white;
+      border-radius: 16px;
+      box-sizing: border-box;
+      color: var(--white);
+      display: inline-block;
+      font-family: 'Nunito', sans-serif;
+      height: 80px;
+      margin-bottom: 24px;
+      padding: 12px;
+      width: 100%;
+    }
+
+    .comment-box textarea::placeholder {
+      color: var(--gray);
+    }
+
+    .submit-button {
+      background: var(--white);
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 24px;
+      padding: 8px;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .visible {
+      display: inline-block;
+      animation: visible 0.3s ease-in-out forwards;
+    }
+
+    @keyframes visible {
+      from {
+        height: 0;
+      }
+      to {
+        height: 138px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="modal">
+    <img class="main-image" src="https://i.ibb.co/PmV6Qgn/Christmas-tree-01.png" alt="Hand with tree">
+    <h1 class="title">Do you like uGift?</h1>
+    <p class="subtitle">Rate your expirience</p>
+    <div class="stars-container">
+      <div class="gray-stars-container">
+        <img src="https://i.ibb.co/j4LkR89/icons8-star-30.png" alt="gray star">
+        <img src="https://i.ibb.co/j4LkR89/icons8-star-30.png" alt="gray star">
+        <img src="https://i.ibb.co/j4LkR89/icons8-star-30.png" alt="gray star">
+        <img src="https://i.ibb.co/j4LkR89/icons8-star-30.png" alt="gray star">
+        <img src="https://i.ibb.co/j4LkR89/icons8-star-30.png" alt="gray star">
+      </div>
+      <p class="yellow-stars-container">
+        <span id="star1" class="star">⭐️</span>
+        <span id="star2" class="star">⭐️</span>
+        <span id="star3" class="star">⭐️</span>
+        <span id="star4" class="star">⭐️</span>
+        <span id="star5" class="star">⭐️</span>
+      </p>
+    </div>
+    <div id="comment-box" class="comment-box hidden">
+      <label for="comment">Leave us your comment</label>
+      <textarea name="comment" id="" cols="30" rows="10" placeholder="Type your comment"></textarea>
+    </div>
+    <button id="submit-button" class="submit-button">Submit</button>
+  </section>
+  <script>
+    const stars = document.querySelectorAll('.star')
+    const commentBox = document.getElementById('comment-box')
+    const submitButton = document.getElementById('submit-button')
+
+    const visibleStars = {
+      star1: document.getElementById('star1'),
+      star2: document.getElementById('star2'),
+      star3: document.getElementById('star3'),
+      star4: document.getElementById('star4'),
+      star5: document.getElementById('star5')
+    }
+
+    const visibleStarsArr = Object.keys(visibleStars) // ["star1","star2","star3","star4","star5"]
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const starNumber = visibleStarsArr.findIndex(e => e === star.getAttribute('id')) // 0
+        const hiddenStars = visibleStarsArr.slice(starNumber + 1, 5) // 1-5
+        hiddenStars.map(hiddenStar => {
+          visibleStars[hiddenStar].classList.remove('visible')
+          visibleStars[hiddenStar].classList.add('hidden')
+        })
+
+        if (star.getAttribute('id') !== 'star5') {
+          commentBox.classList.remove('hidden')
+          commentBox.classList.add('visible')
+        }
+      })
+    })
+
+    submitButton.addEventListener('click', () => {
+      visibleStarsArr.map(showStar => {
+        visibleStars[showStar].classList.remove('hidden')
+        visibleStars[showStar].classList.add('visible')
+        commentBox.classList.remove('visible')
+        commentBox.classList.add('hidden')
+      })
+    })
+  </script>
+</body>
+</html>
